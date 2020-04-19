@@ -6,10 +6,11 @@ import (
 	"time"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/echo/v4"
+
+	"github.com/QuaererePlatform/go-kootenay/internal/server/handlers"
 )
 
 const (
-	//appName = "kootenay"
 	readTimeout = 5 * time.Second
 	writeTimeout = 10* time.Second
 )
@@ -44,6 +45,8 @@ func New(c *Config) (Server, error) {
 
 	s.setupRoutes()
 	s.setupMiddlewares()
+
+	return s, nil
 }
 
 func (s *server) Start() error {

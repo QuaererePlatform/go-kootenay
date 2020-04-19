@@ -1,4 +1,4 @@
-package main
+package kootenay
 
 import (
 	"context"
@@ -14,9 +14,23 @@ import (
 )
 
 var serveCmd = &cobra.Command{
-	Use: "serve",
+	Use:   "serve",
 	Short: "Start",
-	Run: serve,
+	Run:   serve,
+}
+
+func init() {
+	serveCmd.Flags().StringP(
+		"bind", "b", "0.0.0.0", "bind address for web server")
+	serveCmd.Flags().IntP("port", "p", 1323, "port for web server")
+	serveCmd.Flags().Bool("disable-tls", false, "disable TLS for web server")
+
+	_ = viper.BindPFlag("bind", serveCmd.Flags().Lookup("bind"))
+	_ = viper.BindPFlag("port", serveCmd.Flags().Lookup("port"))
+	_ = viper.BindPFlag("tls_disabled", serveCmd.Flags().Lookup("disable-tls"))
+
+
+	rootCmd.AddCommand(serveCmd)
 }
 
 func serve(cmd *cobra.Command, args []string) {
@@ -31,7 +45,7 @@ func serve(cmd *cobra.Command, args []string) {
 		log.Fatal(err)
 	}
 
-	go func() { log.Fatal(s.Start())}()
+	go func() { log.Fatal(s.Start()) }()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)

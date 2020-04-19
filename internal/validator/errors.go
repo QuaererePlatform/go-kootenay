@@ -50,7 +50,7 @@ func (e *err) Error() string {
 			points[i] = fmt.Sprintf("* %s", err)
 		}
 
-		return fmt.Sprintf("%d errors occured:\n\t%s\n\t", len(s), strings.Join(points, "\n\t"))
+		return fmt.Sprintf("%d errors occured:\n\t%s\n\t", len(es), strings.Join(points, "\n\t"))
 	}
 
 	return result.Error()
